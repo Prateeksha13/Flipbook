@@ -5,20 +5,37 @@
 #define pageWidth 600
 #define maxRows 30
 #define maxCols 30
-#define dx 30
+#define lineWidth 30
 GLfloat x[maxRows]={0,0};
 GLfloat y[maxCols]={0,0};
-void init()
+void initReshape()
 {
+    glViewport(0,0,pageWidth,pageHeight);
     glClearColor(1.0,1.0,1.0,0.0);
     glMatrixMode(GL_PROJECTION);
-    gluOrtho2D(0.0,pageHeight,0.0,pageWidth);
+    glLoadIdentity();
+    glOrtho(-pageWidth,pageHeight*2,-pageHeight,pageWidth*2,-10.0,10.0);
+    glMatrixMode(GL_MODELVIEW);
+    glutPostRedisplay();
 }
+
 void setMargin()
 {
-    glBegin(GL_LINES);
-        glVertex2f(marginWidth,0);
-        glVertex2f(marginWidth,pageHeight);
+    glBegin(GL_LINE_LOOP);
+        glVertex3f(0.0,0.0,0.0);
+        glVertex3f(pageWidth,0.0,0.0);
+        glVertex3f(pageWidth,pageHeight,0.0);
+        glVertex3f(0.0,pageHeight,0.0);
+    glEnd();
+    glBegin(GL_LINE_LOOP);
+        glVertex3f(0.0,-10.0,-2.0);
+        glVertex3f(pageWidth,-10.0,-2.0);
+        glVertex3f(pageWidth,pageHeight,-2.0);
+        glVertex3f(0.0,pageHeight,-2.0);
+    glEnd();
+ glBegin(GL_LINE_LOOP);
+        glVertex3f(marginWidth,0,0.0);
+        glVertex3f(marginWidth,pageHeight,0.0);
     glEnd();
     glBegin(GL_LINES);
         glVertex2f(0, pageHeight - marginHeight);
@@ -33,12 +50,12 @@ void setMargin()
     float pageBodyStarty = pageHeight - marginHeight;
     float pageBodyEndx = pageWidth; 
     glColor3f(1.0,0.0,0.0);
-    for(index=1;index<maxRows;index++)
+    for(index=1;index<maxRows && index<(pageBodyStarty)/lineWidth;index++)
     {
-        y[index] = (pageBodyStarty- (dx * index));
+        y[index] = (pageBodyStarty- (lineWidth * index));
         glBegin(GL_LINES);
-            glVertex2f(pageBodyStartx,y[index]);
-            glVertex2f(pageWidth,y[index]);
+            glVertex3f(pageBodyStartx,y[index],0.0);
+            glVertex3f(pageWidth,y[index],0.0);
         glEnd();
     }
     noOfLines=index; 
@@ -46,7 +63,7 @@ void setMargin()
 } 
 void display()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glColor3f(0.0,0.0,0.0);
     glPointSize(5.0);
     setMargin();
@@ -59,6 +76,7 @@ void display()
         glVertex2f(200,200);
     glEnd();
     */
+ 
     glFlush();
 }
 int main(int argc, char **argv)
@@ -67,8 +85,9 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowPosition(50,50);
     glutInitWindowSize(pageWidth,pageHeight);
-    glutCreateWindow("Page");
-    init();
+    glutCreateWindow("Notebook");
+    initReshape();
     glutDisplayFunc(display);
+    glEnable(GL_DEPTH_TEST);
     glutMainLoop();
 }
