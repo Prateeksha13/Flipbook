@@ -1,0 +1,10 @@
+#define BOOK_HEIGHT 550
+#define BOOK_WIDTH 550
+#define PAGE_HEIGHT 600
+#define PAGE_WIDTH 600
+#define MAX_LINES 50
+#define LINE_HEIGHT 30
+#define MARGIN_HEIGHT 60
+#define MARGIN_WIDTH 70
+#define PAGE_TYPE_TEXT 0
+#define PAGE_TYPE_DRAWING 1
