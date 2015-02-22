@@ -4,14 +4,34 @@
 #include "constants.h"
 #include "Book.h"
 using namespace std;
+Book flipbook(-100, -100, 0);
+void test2(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
+{
+    glBegin(GL_LINE_LOOP);
+        glVertex3f(x, y, z);
+        glVertex3f(width, y, z);
+        glVertex3f((x + width)/2.0, height, z);
+    glEnd();
+}
+void test(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
+{
+    glColor3f(0.0,0.0,1.0);
+    glBegin(GL_LINE_LOOP);
+        glVertex3f(x, y, z);
+        glVertex3f(width, y, z);
+        glVertex3f((x + width)/2.0, height, z);
+    glEnd();
+}
 void display()
 {
+    char string[]="Hello";
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glColor3f(0.0,0.0,0.0);
-    Book flipbook(-100, -100, 0);
-    flipbook.addPage(PAGE_TYPE_TEXT);
-    flipbook.addPage(PAGE_TYPE_DRAWING);
-    flipbook.renderPage(1);
+    flipbook.addPage(PAGE_TYPE_DRAWING,test);
+    flipbook.addPage(PAGE_TYPE_TEXT,string);
+    flipbook.addPage(PAGE_TYPE_DRAWING,test2);
+    flipbook.renderBook();
+    flipbook.renderPage(2);
     glFlush();
     glutSwapBuffers();
 }
