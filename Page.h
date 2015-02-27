@@ -48,11 +48,9 @@ void Page::init(GLint type, GLfloat x, GLfloat y, GLfloat z)
 }
 void Page::renderPage()
 {
-    glFlush();
     glColor3f(0.0,0.0,0.0);
     setBorder();
     setMargin();
-    
     if(type == PAGE_TYPE_TEXT && text != NULL)
         setPageLines();
     else if(type == PAGE_TYPE_DRAWING && pageContent != NULL)

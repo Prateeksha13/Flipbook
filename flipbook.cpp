@@ -4,13 +4,15 @@
 #include "constants.h"
 #include "Book.h"
 using namespace std;
-Book flipbook(-100, -100, 0);
+int x;
+float angle;
 void test2(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
 {
     glBegin(GL_LINE_LOOP);
         glVertex3f(x, y, z);
         glVertex3f(width, y, z);
-        glVertex3f((x + width)/2.0, height, z);
+        glVertex3f(width, height/2, z);
+        glVertex3f(x,height/2,z);
     glEnd();
 }
 void test(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
@@ -27,12 +29,12 @@ void display()
     char string[]="Hello";
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glColor3f(0.0,0.0,0.0);
+    Book flipbook(-100, -100, 0);
     flipbook.addPage(PAGE_TYPE_DRAWING,test);
     flipbook.addPage(PAGE_TYPE_TEXT,string);
     flipbook.addPage(PAGE_TYPE_DRAWING,test2);
-    flipbook.renderBook();
-    flipbook.renderPage(2);
-    glFlush();
+    flipbook.renderPage(x);
+    glRotatef(angle,0,0,1);
     glutSwapBuffers();
 }
 void initReshape(int w, int h)
@@ -49,8 +51,33 @@ void initReshape(int w, int h)
     glMatrixMode(GL_MODELVIEW);
     glutPostRedisplay();
 }
+void mykeyboard(unsigned char key, GLint x,GLint y)
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    if(key == 'z')
+        x=0;
+    if(key == 'x')
+        x=1;
+    if(key == 'c')
+        x=2;
+    glutSwapBuffers();
+    glutPostRedisplay();
+}
+void mymenu(int id)
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    if(id == 1)
+        x=0;
+    if(id == 2)
+        x=1;
+    if(id == 3)
+        x=2;
+    glutSwapBuffers();
+    glutPostRedisplay();
+}
 int main(int argc, char **argv)
 {
+    int menuid;
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowPosition(50,50);
@@ -58,6 +85,12 @@ int main(int argc, char **argv)
     glutCreateWindow("FlipBook");
     glutReshapeFunc(initReshape);
     glutDisplayFunc(display);
+    menuid=glutCreateMenu(mymenu);
+    glutAddMenuEntry("page1",1);
+    glutAddMenuEntry("page2",2);
+    glutAddMenuEntry("page3",3);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
+    glutKeyboardFunc(mykeyboard);
     glEnable(GL_DEPTH_TEST);
     glutMainLoop();
 }
