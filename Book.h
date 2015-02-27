@@ -54,10 +54,14 @@ void Book::addPage(GLint type, void (*pageContent)(GLfloat, GLfloat, GLfloat, GL
 }
 void Book::renderPage()
 {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    renderBook();
 	pages[currentPageIndex]->renderPage();
 }
 void Book::renderPage(GLint pageIndex)
 {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    renderBook();
 	if(pageIndex<noOfPages)
 		pages[pageIndex]->renderPage();
 }
