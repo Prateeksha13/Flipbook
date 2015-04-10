@@ -26,8 +26,8 @@ Page::Page(GLint type, GLfloat x, GLfloat y, GLfloat z, char text[])
 Page::Page(GLint type, GLfloat x, GLfloat y, GLfloat z, void (*pageContent)(GLfloat, GLfloat, GLfloat, GLfloat, GLfloat))
 {
     init(type, x, y, z);
-        if(type == PAGE_TYPE_DRAWING)
-    {    
+    if(type == PAGE_TYPE_DRAWING)
+    {
         this->pageContent = pageContent;
     }
 }
@@ -59,22 +59,22 @@ void Page::renderPage()
 void Page::setBorder()
 {
     glBegin(GL_LINE_LOOP);
-        glVertex3f(x, y, z);
-        glVertex3f(x + width, y, z);
-        glVertex3f(x + width, y + height, z);
-        glVertex3f(x, y + height, z);
+    glVertex3f(x, y, z);
+    glVertex3f(x + width, y, z);
+    glVertex3f(x + width, y + height, z);
+    glVertex3f(x, y + height, z);
     glEnd();
 }
 void Page::setMargin()
 {
     glColor3f(0.0,0.0,0.0);
     glBegin(GL_LINE_LOOP);
-        glVertex3f(x + marginWidth, y, z);
-        glVertex3f(x + marginWidth, y + height, z);
+    glVertex3f(x + marginWidth, y, z);
+    glVertex3f(x + marginWidth, y + height, z);
     glEnd();
     glBegin(GL_LINES);
-        glVertex2f(x, y + height - marginHeight);
-        glVertex2f(x + width, x + height - marginHeight);
+    glVertex2f(x, y + height - marginHeight);
+    glVertex2f(x + width, x + height - marginHeight);
     glEnd();
 }
 void Page::setPageLines()
@@ -86,14 +86,14 @@ void Page::setPageLines()
     int index=0;
     float pageBodyStartx = x + marginWidth;
     float pageBodyStarty = y + height - marginHeight;
-    float pageBodyEndx = x + width; 
+    float pageBodyEndx = x + width;
     glColor3f(1.0,0.0,0.0);
     for(index=1;index<MAX_LINES && index<((pageBodyStarty-y)/(lineHeight));index++)
     {
         lines[index] = (pageBodyStarty - (LINE_HEIGHT * index));
         glBegin(GL_LINES);
-            glVertex3f(pageBodyStartx, lines[index],0.0);
-            glVertex3f(x + width, lines[index],0.0);
+        glVertex3f(pageBodyStartx, lines[index],0.0);
+        glVertex3f(x + width, lines[index],0.0);
         glEnd();
     }
     glColor3f(0.0,0.0,0.0);
