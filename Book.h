@@ -2,22 +2,12 @@
 #include<iostream>
 using namespace std;
 
-void boxConstruction(GLint a,GLint b,GLint c,GLint d,GLfloat vertices[][3])
-{
-    glBegin(GL_LINE_LOOP);
-    glVertex3fv(vertices[a]);
-    glVertex3fv(vertices[b]);
-    glVertex3fv(vertices[c]);
-    glVertex3fv(vertices[d]);
-    glEnd();
-}
-
 class Book
 {
     public:
         GLfloat x, y, z;
         GLfloat width, height;
-        GLint noOfPages, currentPageIndex;
+        GLint noOfPages, currentPageIndex, destinationPageIndex;
         Page **pages;
         Book(GLfloat, GLfloat, GLfloat);
         void addPage(GLint, char[]);
@@ -36,50 +26,50 @@ Book::Book(GLfloat x, GLfloat y, GLfloat z)
     this->height = BOOK_HEIGHT;
     this->noOfPages = 0;
     this->pages = new Page*[MAX_NO_PAGES];
+    this->currentPageIndex = 0;
+    printf("\nBook");
+    printf("\nBook x->%lf",x);
+    printf("\nBook y->%lf",y);
+    printf("\nBook z->%lf\n",z);
+    fflush(stdout);
 }
 void Book::renderBook()
 {
+    int i=0;
     glColor3f(0.0,0.0,0.0);
     setBorder();
 }
 void Book::setBorder()
 {
-    GLfloat xLimit = x + width + BOOK_BORDER_SIZE;
-    GLfloat yLimit = y + height + BOOK_BORDER_SIZE;
+    glColor3f(0,0,0);
+    GLfloat xLimit = x + width;
+    GLfloat yLimit = y + height;
     GLfloat zLimit = z - BOOK_THICKNESS;
-    x = -x - width - 2*BOOK_BORDER_SIZE + 2*MARGIN_WIDTH;
-    GLfloat vertices[][3]={
-        {x, y, z}, {xLimit, y, z}, {xLimit, yLimit, z}, {x, yLimit, z},
-        {x, y, zLimit}, {xLimit, y, zLimit}, {xLimit, yLimit, zLimit}, {x, yLimit, zLimit}
-    };
-    glPointSize(5.0);
-    boxConstruction(0,3,2,1,vertices);
-    boxConstruction(2,3,7,6,vertices);
-    boxConstruction(0,4,7,3,vertices);
-    boxConstruction(1,2,6,5,vertices);
-    boxConstruction(4,5,6,7,vertices);
-    boxConstruction(0,1,5,4,vertices);
+    printf("\nBook x1->%lf",xLimit);
+    printf("\nBook y1->%lf",yLimit);
+    printf("\nBook z1->%lf\n",zLimit);
+    fflush(stdout);
+    cubeConstruction(x, y, z, xLimit, yLimit, zLimit);
 }
 void Book::addPage(GLint type, char s[])
 {
-    pages[noOfPages] = new Page(type, (x + BOOK_BORDER_SIZE), y + BOOK_BORDER_SIZE, noOfPages, s);
-    currentPageIndex = noOfPages++;
+    pages[noOfPages] = new Page(type, (x + BOOK_BORDER_SIZE), y + BOOK_BORDER_SIZE, -(noOfPages * (PAGE_THICKNESS + PAGE_GAP)), s);
+    noOfPages++;
 }
 void Book::addPage(GLint type, void (*pageContent)(GLfloat, GLfloat, GLfloat, GLfloat, GLfloat))
 {
-    pages[noOfPages] = new Page(type, (x + BOOK_BORDER_SIZE), y + BOOK_BORDER_SIZE, noOfPages, pageContent);
-    currentPageIndex = noOfPages++;
+    pages[noOfPages] = new Page(type, (x + BOOK_BORDER_SIZE), y + BOOK_BORDER_SIZE, -(noOfPages * (PAGE_THICKNESS + PAGE_GAP)), pageContent);
+    noOfPages++;
 }
 void Book::renderPage()
 {
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    renderBook();
     pages[currentPageIndex]->renderPage();
 }
 void Book::renderPage(GLint pageIndex)
 {
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    //renderBook();
-    if(pageIndex<noOfPages)
+    if(pageIndex<noOfPages){
         pages[pageIndex]->renderPage();
+    }
 }

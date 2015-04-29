@@ -1,5 +1,8 @@
 #include<iostream>
 using namespace std;
+void squareConstruction(GLint, GLint, GLint, GLint, GLfloat**);
+void cubeConstruction(GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat);
+
 class Page
 {
     public:
@@ -44,7 +47,10 @@ void Page::init(GLint type, GLfloat x, GLfloat y, GLfloat z)
     this->lineHeight = LINE_HEIGHT;
     this->pageContent = NULL;
     this->text = NULL;
-
+    printf("\nPage x->%lf",x);
+    printf("\nPage y->%lf",y);
+    printf("\nPage z->%lf",z);
+    fflush(stdout);
 }
 void Page::renderPage()
 {
@@ -58,11 +64,21 @@ void Page::renderPage()
 }
 void Page::setBorder()
 {
-    glBegin(GL_LINE_LOOP);
-    glVertex3f(x, y, z);
-    glVertex3f(x + width, y, z);
-    glVertex3f(x + width, y + height, z);
-    glVertex3f(x, y + height, z);
+    GLfloat xLimit = x + width;
+    GLfloat yLimit = y + height;
+    GLfloat zLimit = z - PAGE_THICKNESS;
+    printf("\nPage x1->%lf",xLimit);
+    printf("\nPage y1->%lf",yLimit);
+    printf("\nPage z1->%lf\n",zLimit);
+    fflush(stdout);
+    glColor3f(0,0,0);
+    cubeConstruction(x, y, z, xLimit, yLimit, zLimit);
+    glColor3f(1,1,1);
+    glBegin(GL_POLYGON);
+    glVertex3f(x, y, z-PAGE_THICKNESS);
+    glVertex3f(x + width, y, z-PAGE_THICKNESS);
+    glVertex3f(x + width, y + height, z-PAGE_THICKNESS);
+    glVertex3f(x, y + height, z-PAGE_THICKNESS);
     glEnd();
 }
 void Page::setMargin()
@@ -73,8 +89,8 @@ void Page::setMargin()
     glVertex3f(x + marginWidth, y + height, z);
     glEnd();
     glBegin(GL_LINES);
-    glVertex2f(x, y + height - marginHeight);
-    glVertex2f(x + width, x + height - marginHeight);
+    glVertex3f(x, y + height - marginHeight, z);
+    glVertex3f(x + width, x + height - marginHeight, z);
     glEnd();
 }
 void Page::setPageLines()
@@ -92,10 +108,35 @@ void Page::setPageLines()
     {
         lines[index] = (pageBodyStarty - (LINE_HEIGHT * index));
         glBegin(GL_LINES);
-        glVertex3f(pageBodyStartx, lines[index],0.0);
-        glVertex3f(x + width, lines[index],0.0);
+        glVertex3f(pageBodyStartx, lines[index],z);
+        glVertex3f(x + width, lines[index],z);
         glEnd();
     }
     glColor3f(0.0,0.0,0.0);
     noOfLines=index-1;
+}
+
+void squareConstruction(GLint a,GLint b,GLint c,GLint d,GLfloat vertices[][3])
+{
+    glBegin(GL_LINE_LOOP);
+    glVertex3fv(vertices[a]);
+    glVertex3fv(vertices[b]);
+    glVertex3fv(vertices[c]);
+    glVertex3fv(vertices[d]);
+    glEnd();
+}
+
+void cubeConstruction(GLfloat x, GLfloat y, GLfloat z, GLfloat xLimit, GLfloat yLimit, GLfloat zLimit)
+{
+    GLfloat vertices[][3]={
+        {x, y, z}, {xLimit, y, z}, {xLimit, yLimit, z}, {x, yLimit, z},
+        {x, y, zLimit}, {xLimit, y, zLimit}, {xLimit, yLimit, zLimit}, {x, yLimit, zLimit}
+    };
+    glPointSize(5.0);
+    squareConstruction(0,3,2,1,vertices);
+    squareConstruction(2,3,7,6,vertices);
+    squareConstruction(0,4,7,3,vertices);
+    squareConstruction(1,2,6,5,vertices);
+    squareConstruction(4,5,6,7,vertices);
+    squareConstruction(0,1,5,4,vertices);
 }

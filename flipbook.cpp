@@ -4,56 +4,48 @@
 #include<GL/glut.h>
 #include "constants.h"
 #include "Book.h"
+#include "Drawings.h"
 using namespace std;
 int x;
 float angle;
-void test2(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
-{
-    glBegin(GL_LINE_LOOP);
-    glVertex3f(x, y, z);
-    glVertex3f(width, y, z);
-    glVertex3f(width, height/2, z);
-    glVertex3f(x,height/2,z);
-    glEnd();
-}
-void test(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
-{
-    glColor3f(0.0,0.0,1.0);
-    glBegin(GL_LINE_LOOP);
-    glVertex3f(x, y, z);
-    glVertex3f(width, y, z);
-    glVertex3f((x + width)/2.0, height, z);
-    glEnd();
-}
+
 void display()
 {
     char string[]="Hello";
-    glLoadIdentity();
-    gluLookAt(0,0,0,0,4,MAX_NO_PAGES,0,1,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    glLoadIdentity();
+    gluLookAt(0,0,0,20,0,-50,0,50,0);
     glColor3f(0.0,0.0,0.0);
     Book flipbook(0, 0, 0);
-    flipbook.addPage(PAGE_TYPE_DRAWING,test);
+    flipbook.addPage(PAGE_TYPE_DRAWING,triangle);   
+    flipbook.addPage(PAGE_TYPE_DRAWING,square); 
     flipbook.addPage(PAGE_TYPE_TEXT,string);
-    flipbook.addPage(PAGE_TYPE_DRAWING,test2);
+    flipbook.addPage(PAGE_TYPE_DRAWING,triangle);   
+    flipbook.addPage(PAGE_TYPE_DRAWING,square); 
     flipbook.renderBook();
     glPushMatrix();
-    glLoadIdentity();
-    glRotatef(angle,0,1.0,0.0);
+    glTranslatef(BOOK_BORDER_SIZE,PAGE_HEIGHT+BOOK_BORDER_SIZE,0);
+    glRotatef(angle,-1.0,-1.0,0.0);
+    glTranslatef(-BOOK_BORDER_SIZE,-PAGE_HEIGHT-BOOK_BORDER_SIZE,0);
     flipbook.renderPage(x);
     glFlush();
     glPopMatrix();
+    flipbook.renderPage(x+1);
+    glFlush();
+
     glutSwapBuffers();
 }
 void rotate(){
-    if(angle<=180)
+    if(angle<=280)
     {
         angle += 2;
-        glutPostRedisplay();
     }
     else{
-        angle-=180;
+        angle-=280;
+        x = (x + 1)%6;
     }
+
+    glutPostRedisplay();
 }
 void initReshape(int w, int h)
 {
@@ -66,32 +58,31 @@ void initReshape(int w, int h)
         glOrtho(-WINDOW_WIDTH,WINDOW_WIDTH,-WINDOW_HEIGHT*(GLfloat)h/(GLfloat)w,WINDOW_HEIGHT*(GLfloat)h/(GLfloat)w,-MAX_NO_PAGES*BOOK_THICKNESS,MAX_NO_PAGES*BOOK_THICKNESS);
     else
         glOrtho(-WINDOW_WIDTH*(GLfloat)w/(GLfloat)h,WINDOW_WIDTH*(GLfloat)w/(GLfloat)h,-WINDOW_HEIGHT,WINDOW_HEIGHT,-MAX_NO_PAGES*BOOK_THICKNESS,MAX_NO_PAGES*BOOK_THICKNESS);
-
     glMatrixMode(GL_MODELVIEW);
     glutPostRedisplay();
 }
 void mykeyboard(unsigned char key, GLint x,GLint y)
 {
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     if(key == 'z')
         x=0;
     if(key == 'x')
         x=1;
     if(key == 'c')
         x=2;
-    //glutSwapBuffers();
+    glutSwapBuffers();
     glutPostRedisplay();
 }
 void mymenu(int id)
 {
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     if(id == 1)
         x=0;
     if(id == 2)
         x=1;
     if(id == 3)
         x=2;
-    //glutSwapBuffers();
+    glutSwapBuffers();
     glutPostRedisplay();
 }
 int main(int argc, char **argv)
