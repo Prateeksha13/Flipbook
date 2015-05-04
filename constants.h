@@ -1,7 +1,7 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 700
 #define MAX_LINES 50
-#define LINE_HEIGHT 15
+#define LINE_HEIGHT 35
 #define MAX_PAGE_TEXT_SIZE 500
 #define PAGE_THICKNESS 1
 #define PAGE_GAP 1
@@ -16,5 +16,6 @@
 #define MAX_NO_PAGES 100
 #define MARGIN_HEIGHT 30
 #define MARGIN_WIDTH 30
-#define ASYNC_LOCK 1
-#define ASYNC_UNLCK 0
+#define WALL_THICKNESS 50
+#define WALL_HEIGHT 500
+#define WALL_WIDTH 500
