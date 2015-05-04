@@ -27,11 +27,6 @@ Book::Book(GLfloat x, GLfloat y, GLfloat z)
     this->noOfPages = 0;
     this->pages = new Page*[MAX_NO_PAGES];
     this->currentPageIndex = 0;
-    printf("\nBook");
-    printf("\nBook x->%lf",x);
-    printf("\nBook y->%lf",y);
-    printf("\nBook z->%lf\n",z);
-    fflush(stdout);
 }
 void Book::renderBook()
 {
@@ -45,11 +40,14 @@ void Book::setBorder()
     GLfloat xLimit = x + width;
     GLfloat yLimit = y + height;
     GLfloat zLimit = z - BOOK_THICKNESS;
-    printf("\nBook x1->%lf",xLimit);
-    printf("\nBook y1->%lf",yLimit);
-    printf("\nBook z1->%lf\n",zLimit);
-    fflush(stdout);
     cubeConstruction(x, y, z, xLimit, yLimit, zLimit);
+    glColor3f(1,1,1);
+    glBegin(GL_POLYGON);
+    glVertex3f(x, y, zLimit);
+    glVertex3f(xLimit, y, zLimit);
+    glVertex3f(xLimit, yLimit, zLimit);
+    glVertex3f(x, yLimit, zLimit);
+    glEnd();
 }
 void Book::addPage(GLint type, char s[])
 {
