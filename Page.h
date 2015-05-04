@@ -1,4 +1,5 @@
 #include<iostream>
+#include<string.h>
 using namespace std;
 void squareConstruction(GLint, GLint, GLint, GLint, GLfloat**);
 void cubeConstruction(GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat);
@@ -19,6 +20,7 @@ class Page
         void setMargin();
         void setPageLines();
         void setBorder();
+        void renderText();
         void init(GLint, GLfloat, GLfloat, GLfloat);
 };
 Page::Page(GLint type, GLfloat x, GLfloat y, GLfloat z, char text[])
@@ -47,30 +49,54 @@ void Page::init(GLint type, GLfloat x, GLfloat y, GLfloat z)
     this->lineHeight = LINE_HEIGHT;
     this->pageContent = NULL;
     this->text = NULL;
-    printf("\nPage x->%lf",x);
-    printf("\nPage y->%lf",y);
-    printf("\nPage z->%lf",z);
-    fflush(stdout);
 }
 void Page::renderPage()
 {
     glColor3f(0.0,0.0,0.0);
     setBorder();
     setMargin();
-    if(type == PAGE_TYPE_TEXT && text != NULL)
+    if(type == PAGE_TYPE_TEXT && text != NULL){
         setPageLines();
+        renderText();
+    }
     else if(type == PAGE_TYPE_DRAWING && pageContent != NULL)
         pageContent(x + marginWidth, y, z, x + width, y + height - marginHeight);
+}
+void Page::renderText()
+{
+    char ch;
+    int i=0, lines=0, characterHeight = 130, characterWidth, len=strlen(text), bufferWidth = 5, bufferHeight = 5;
+    GLfloat ratio = LINE_HEIGHT/130.0, sum = bufferWidth;
+    for(i=0;i<len;i++)
+    {
+        glPushMatrix();
+        ch = text[i];
+        characterWidth = glutStrokeWidth(GLUT_STROKE_ROMAN, ch);
+        characterHeight = characterHeight * ratio;
+        characterWidth = characterWidth * ratio;
+        if((sum + characterWidth > PAGE_WIDTH - MARGIN_WIDTH) || ch == '\n'){
+            lines++;
+            sum = characterWidth;
+            glTranslatef(BOOK_BORDER_SIZE + MARGIN_WIDTH, 
+                BOOK_BORDER_SIZE + PAGE_HEIGHT - MARGIN_HEIGHT - (lines + 1) * LINE_HEIGHT, z);
+        }
+        else{
+            glTranslatef(BOOK_BORDER_SIZE + MARGIN_WIDTH + sum, 
+                BOOK_BORDER_SIZE + PAGE_HEIGHT - MARGIN_HEIGHT - (lines + 1) * LINE_HEIGHT, z);
+            sum += characterWidth;
+        }
+        glScalef(ratio, ratio, 1);
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, ch);
+        glFlush();
+        glPopMatrix();
+    }
+    
 }
 void Page::setBorder()
 {
     GLfloat xLimit = x + width;
     GLfloat yLimit = y + height;
     GLfloat zLimit = z - PAGE_THICKNESS;
-    printf("\nPage x1->%lf",xLimit);
-    printf("\nPage y1->%lf",yLimit);
-    printf("\nPage z1->%lf\n",zLimit);
-    fflush(stdout);
     glColor3f(0,0,0);
     cubeConstruction(x, y, z, xLimit, yLimit, zLimit);
     glColor3f(1,1,1);
