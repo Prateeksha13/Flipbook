@@ -78,11 +78,11 @@ void Page::renderText()
             lines++;
             sum = characterWidth;
             glTranslatef(BOOK_BORDER_SIZE + MARGIN_WIDTH, 
-                BOOK_BORDER_SIZE + PAGE_HEIGHT - MARGIN_HEIGHT - (lines + 1) * LINE_HEIGHT, z);
+                BOOK_BORDER_SIZE + PAGE_HEIGHT - MARGIN_HEIGHT - (lines + 1) * LINE_HEIGHT + bufferWidth, z);
         }
         else{
             glTranslatef(BOOK_BORDER_SIZE + MARGIN_WIDTH + sum, 
-                BOOK_BORDER_SIZE + PAGE_HEIGHT - MARGIN_HEIGHT - (lines + 1) * LINE_HEIGHT, z);
+                BOOK_BORDER_SIZE + PAGE_HEIGHT - MARGIN_HEIGHT - (lines + 1) * LINE_HEIGHT + bufferWidth, z);
             sum += characterWidth;
         }
         glScalef(ratio, ratio, 1);
@@ -111,12 +111,12 @@ void Page::setMargin()
 {
     glColor3f(0.0,0.0,0.0);
     glBegin(GL_LINE_LOOP);
-    glVertex3f(x + marginWidth, y, z);
-    glVertex3f(x + marginWidth, y + height, z);
+        glVertex3f(x + marginWidth, y, z);
+        glVertex3f(x + marginWidth, y + height, z);
     glEnd();
     glBegin(GL_LINES);
-    glVertex3f(x, y + height - marginHeight, z);
-    glVertex3f(x + width, x + height - marginHeight, z);
+        glVertex3f(x, y + height - marginHeight, z);
+        glVertex3f(x + width, x + height - marginHeight, z);
     glEnd();
 }
 void Page::setPageLines()
@@ -145,10 +145,14 @@ void Page::setPageLines()
 void squareConstruction(GLint a,GLint b,GLint c,GLint d,GLfloat vertices[][3])
 {
     glBegin(GL_LINE_LOOP);
-    glVertex3fv(vertices[a]);
-    glVertex3fv(vertices[b]);
-    glVertex3fv(vertices[c]);
-    glVertex3fv(vertices[d]);
+        glVertex3fv(vertices[a]);
+        glNormal3fv(vertices[a]);
+        glVertex3fv(vertices[b]);
+        glNormal3fv(vertices[b]);
+        glVertex3fv(vertices[c]);
+        glNormal3fv(vertices[c]);
+        glVertex3fv(vertices[d]);
+        glNormal3fv(vertices[d]);
     glEnd();
 }
 
