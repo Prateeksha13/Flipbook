@@ -43,10 +43,14 @@ void Book::setBorder()
     cubeConstruction(x, y, z, xLimit, yLimit, zLimit);
     glColor3f(1,1,1);
     glBegin(GL_POLYGON);
-    glVertex3f(x, y, zLimit);
-    glVertex3f(xLimit, y, zLimit);
-    glVertex3f(xLimit, yLimit, zLimit);
-    glVertex3f(x, yLimit, zLimit);
+        glVertex3f(x, y, zLimit);
+        glNormal3f(x, y, zLimit);
+        glVertex3f(xLimit, y, zLimit);
+        glNormal3f(xLimit, y, zLimit);
+        glVertex3f(xLimit, yLimit, zLimit);
+        glNormal3f(xLimit, yLimit, zLimit);
+        glVertex3f(x, yLimit, zLimit);
+        glNormal3f(x, yLimit, zLimit);
     glEnd();
 }
 void Book::addPage(GLint type, char s[])
@@ -61,12 +65,10 @@ void Book::addPage(GLint type, void (*pageContent)(GLfloat, GLfloat, GLfloat, GL
 }
 void Book::renderPage()
 {
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     pages[currentPageIndex]->renderPage();
 }
 void Book::renderPage(GLint pageIndex)
 {
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     if(pageIndex<noOfPages){
         pages[pageIndex]->renderPage();
     }
