@@ -1,28 +1,5 @@
-#include<iostream>
-#include<string.h>
-using namespace std;
-void squareConstruction(GLint, GLint, GLint, GLint, GLfloat**);
-void cubeConstruction(GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat);
+#include "./headers/Page.h"
 
-class Page
-{
-    public:
-        char *text;
-        GLint type;
-        GLfloat x, y, z;
-        GLfloat width, height;
-        GLfloat marginWidth, marginHeight;
-        GLfloat lineHeight, noOfLines, currentLine, lines[MAX_LINES];
-        void (*pageContent)(GLfloat, GLfloat, GLfloat, GLfloat, GLfloat);
-        Page(GLint, GLfloat, GLfloat, GLfloat, char[]);
-        Page(GLint, GLfloat, GLfloat, GLfloat, void (*)(GLfloat, GLfloat, GLfloat, GLfloat, GLfloat));
-        void renderPage();
-        void setMargin();
-        void setPageLines();
-        void setBorder();
-        void renderText();
-        void init(GLint, GLfloat, GLfloat, GLfloat);
-};
 Page::Page(GLint type, GLfloat x, GLfloat y, GLfloat z, char text[])
 {
     init(type, x, y, z);

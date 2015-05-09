@@ -1,5 +1,6 @@
-#include <SOIL/SOIL.h>
-static GLuint loadTextures(char* filename)
+#include "./headers/Textures.h"
+
+GLuint loadTextures(char* filename)
 {
     GLuint texture = SOIL_load_OGL_texture(
                 filename,
@@ -13,11 +14,12 @@ static GLuint loadTextures(char* filename)
                 | SOIL_FLAG_INVERT_Y
                 );
 
-    if (texture == 0)
-         cout<<"Texture Load Error: " + string(filename);
-
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture (GL_TEXTURE_2D, texture);
+    if (texture == 0){
+        cout<<"Texture Load Error: " + string(filename) +" File is Probably Missing\n";
+        exit(-1);
+    }
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture (GL_TEXTURE_2D, texture);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     return texture;

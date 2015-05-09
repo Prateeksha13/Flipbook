@@ -1,17 +1,4 @@
-#include <stdio.h>
-#include <GL/glut.h>
-#include "constants.h"
-#include "Book.h"
-#include "Drawings.h"
-#include "Textures.h"
-#include "Room.h"
-#include "Welcome.h"
-using namespace std;
-
-GLfloat angle, limit, speed = PAGE_FLIP_SPEED;
-GLint pageId, flipId, viewId;
-GLfloat window_width, window_height;
-int showWelcomeScreen = 1;
+#include "main.h"
 
 void setHexColor(int x){
     GLfloat b=(x%0xff)/255.0;
@@ -59,7 +46,6 @@ void selectViewingAngle()
     }
 }
 void flipPage(){
-    fflush(stdout);
     if(angle<=limit){
         angle += speed;
     }
@@ -206,8 +192,6 @@ void mymenu(int id)
 int main(int argc, char **argv)
 {
     int menuid;
-    char wallImageFilename[]="wall.jpg";
-    char welcomeImageFilename[]="welcome.jpg";
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowPosition(50,50);

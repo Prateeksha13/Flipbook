@@ -1,22 +1,5 @@
-#include "Page.h"
-#include<iostream>
-using namespace std;
+#include "./headers/Book.h"
 
-class Book
-{
-    public:
-        GLfloat x, y, z;
-        GLfloat width, height;
-        GLint noOfPages, currentPageIndex, destinationPageIndex;
-        Page **pages;
-        Book(GLfloat, GLfloat, GLfloat);
-        void addPage(GLint, char[]);
-        void addPage(GLint, void (*)(GLfloat, GLfloat, GLfloat, GLfloat, GLfloat));
-        void renderPage();
-        void renderPage(GLint);
-        void renderBook();
-        void setBorder();
-};
 Book::Book(GLfloat x, GLfloat y, GLfloat z)
 {
     this->x = x;

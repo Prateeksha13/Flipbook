@@ -1,3 +1,5 @@
+#include "./headers/Drawings.h"
+
 void square(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
 {
     glColor3f(0,1,1);

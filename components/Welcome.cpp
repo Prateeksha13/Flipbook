@@ -1,7 +1,9 @@
-#include <string.h>
+#include "./headers/Welcome.h"
+
 extern GLfloat angle, limit;
 extern void setHexColor(int);
 GLuint welcomeTexture;
+
 void renderText(char *string){
     int length = strlen(string);
     for(int i=0;i<length;i++)
@@ -52,7 +54,8 @@ void showCredits()
     glDisable(GL_LIGHT0);
     glDisable(GL_LIGHTING);
 }
-void showFooter(){
+void showFooter()
+{
     char message[]="Press Enter to Continue to the Flipbook";
     glPushMatrix();
     glLoadIdentity();
@@ -62,7 +65,8 @@ void showFooter(){
     glFlush();
     glPopMatrix();
 }
-void runWelcomeScreen(){
+void runWelcomeScreen()
+{
     limit = 720;
     glPushMatrix();
     glLoadIdentity();

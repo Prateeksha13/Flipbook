@@ -1,6 +1,9 @@
+#include "./headers/Room.h"
+
 GLuint wallTexture;
 GLuint ceilingTexture;
 GLuint floorTexture;
+
 void drawRoom()
 {
     glEnable(GL_TEXTURE_2D);

@@ -19,3 +19,4 @@
 #define WALL_THICKNESS 50
 #define WALL_HEIGHT 500
 #define WALL_WIDTH 500
+#define PAGE_FLIP_SPEED 2
