@@ -1,7 +1,11 @@
+/*!
+    /file Drawings.cpp
+    /brief Includes all user defined functions corresponding to the Pages
+*/
+
 #include "./headers/Drawings.h"
 
-void square(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
-{
+void square(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height){
     glColor3f(0,1,1);
     glBegin(GL_POLYGON);
     glVertex3f(x, y, z);
@@ -11,8 +15,7 @@ void square(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
     glEnd();
     glColor3f(1,1,1);
 }
-void square1(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
-{
+void square1(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height){
     glColor3f(0,1,1);
     glBegin(GL_POLYGON);
     glVertex3f(x, y, z);
@@ -30,8 +33,7 @@ void square1(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
     glColor3f(1,1,1);
 }
 
-void square2(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
-{
+void square2(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height){
     glColor3f(0,1,1);
     glBegin(GL_POLYGON);
     glVertex3f(x, y, z);
@@ -48,8 +50,7 @@ void square2(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
     glEnd();
     glColor3f(1,1,1);
 }
-void square3(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
-{
+void square3(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height){
     glColor3f(0,1,1);
     glBegin(GL_POLYGON);
     glVertex3f(x, y, z);
@@ -66,8 +67,7 @@ void square3(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
     glEnd();
     glColor3f(1,1,1);
 }
-void square4(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
-{
+void square4(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height){
     glColor3f(0,1,1);
     glBegin(GL_POLYGON);
     glVertex3f(x, y, z);
@@ -99,8 +99,7 @@ void square4(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
     glEnd();
     glColor3f(1,1,1);
 }
-void square5(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
-{
+void square5(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height){
     glColor3f(0,1,1);
     glBegin(GL_POLYGON);
     glVertex3f(x, y, z);
@@ -132,8 +131,7 @@ void square5(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
     glEnd();
     glColor3f(1,1,1);
 }
-void square6(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
-{
+void square6(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height){
     glColor3f(0,1,1);
     glBegin(GL_POLYGON);
     glVertex3f(x, y, z);
@@ -165,8 +163,7 @@ void square6(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
     glEnd();
     glColor3f(1,1,1);
 }
- void square7(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
-{
+ void square7(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height){
     glColor3f(0,1,1);
     glBegin(GL_POLYGON);
     glVertex3f(x, y, z);
@@ -184,8 +181,7 @@ void square6(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
     glEnd();
 }
 
-  void square8(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
-{
+  void square8(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height){
     glColor3f(0,1,1);
     glBegin(GL_POLYGON);
     glVertex3f(x, y, z);
@@ -211,8 +207,7 @@ void square6(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
     glColor3f(1,1,1);
 }
 
-void square9(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
-{
+void square9(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height){
     glColor3f(0,1,1);
     glBegin(GL_POLYGON);
     glVertex3f(x, y, z);
@@ -238,8 +233,7 @@ void square9(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
     glColor3f(1,1,1);
 }
 
-void square10(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height)
-{
+void square10(GLfloat x,GLfloat y, GLfloat z, GLfloat width, GLfloat height){
     glColor3f(0,1,1);
     glBegin(GL_POLYGON);
     glVertex3f(x, y, z);

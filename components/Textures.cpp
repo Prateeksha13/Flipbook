@@ -1,7 +1,16 @@
+/*!
+    /file Textures.cpp
+    /brief Includes usage of libSOIL for loading and rendering images as Textures
+*/
+
 #include "./headers/Textures.h"
 
-GLuint loadTextures(char* filename)
-{
+/*!
+    \fn loadTextures(char* filename)
+    \brief load an image as texture
+    Load the given input filename as an image using libSOIL and render it as a texture
+*/
+GLuint loadTextures(char* filename){
     GLuint texture = SOIL_load_OGL_texture(
                 filename,
                 SOIL_LOAD_AUTO,

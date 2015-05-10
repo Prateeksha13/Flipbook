@@ -5,9 +5,14 @@ all : build/flipbook
 
 clean :
 	rm -r build
+	rm -r documentation
 
 run : build/flipbook
 	cd build && ./flipbook
+
+documentation : 
+	doxygen
+	cd documentation/html && xdg-open index.html
 
 build :
 	mkdir build 
