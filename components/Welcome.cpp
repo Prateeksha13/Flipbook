@@ -1,6 +1,6 @@
 #include "./headers/Welcome.h"
 
-extern GLfloat angle, limit;
+extern GLfloat pageAngle, pageFlipLimit;
 extern void setHexColor(int);
 GLuint welcomeTexture;
 
@@ -16,7 +16,7 @@ void showHeading()
     glLoadIdentity();
     glTranslatef(-300,250,0);
     glScalef(1.5,1.5,10);
-    glRotatef(angle, 1 , 0 ,0);
+    glRotatef(pageAngle, 1 , 0 ,0);
     renderText(heading);
     glFlush();
     glPopMatrix();
@@ -59,7 +59,7 @@ void showFooter()
     char message[]="Press Enter to Continue to the Flipbook";
     glPushMatrix();
     glLoadIdentity();
-    glTranslatef(- 2 * WINDOW_WIDTH + angle*4,-650,0);
+    glTranslatef(- 2 * WINDOW_WIDTH + pageAngle*4,-650,0);
     glScalef(0.5,0.5,1);
     renderText(message);
     glFlush();
@@ -67,7 +67,7 @@ void showFooter()
 }
 void runWelcomeScreen()
 {
-    limit = 720;
+    pageFlipLimit = 720;
     glPushMatrix();
     glLoadIdentity();
     glEnable(GL_TEXTURE_2D);

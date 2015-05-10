@@ -10,21 +10,20 @@ void setHexColor(int x){
 void selectFlippingPageType()
 {
     if(flipId == 0){
-        limit=270;
-        glRotatef(angle,0.0,-1.0,0.0);
+        pageFlipLimit=270;
+        glRotatef(pageAngle,0.0,-1.0,0.0);
     }
     else if(flipId == 1){
-        limit = 320;
-        glRotatef(angle,-1.0,-1.0,0.0);
+        pageFlipLimit = 320;
+        glRotatef(pageAngle,-1.0,-1.0,0.0);
     }
     else if(flipId == 2){
-        limit=350;
-        glRotatef(angle,-1.0,-0.0,0.0);
+        pageFlipLimit = 350;
+        glRotatef(pageAngle,-1.0,-0.0,0.0);
     }
     else if(flipId == 3){
-        limit=360;
-        angle=0;
-        glRotatef(angle,-1.0,0.0,-1.0);
+        pageFlipLimit=340;
+        glRotatef(pageAngle,-1.0,0.0,-1.0);
     }
 }
 
@@ -40,18 +39,26 @@ void selectViewingAngle()
         gluLookAt(0,-700,2500,20,0,-50,0,50,0);
     }
     else if(viewId == 3){
-        limit=0;
+        viewAngleLimit = 720;
         gluLookAt(-500,0,3000,0,0,0,0,80,0);
-        glRotatef(angle,0.0,-1.0,-1.0);
+        glRotatef(viewAngle,0.0,-1.0,-1.0);
     }
 }
 void flipPage(){
-    if(angle<=limit){
-        angle += speed;
+    if(startFlipping == 1){
+        if(pageAngle<=pageFlipLimit){
+            pageAngle += speed;
+        }
+        else{
+            pageAngle-=pageFlipLimit;
+            pageId = (pageId + 1)%11;
+        }
     }
-    else{
-        angle-=limit;
-        pageId = (pageId + 1)%11;
+    if(viewId == 3){
+        if(viewAngle<=viewAngleLimit)
+            viewAngle += speed;
+        else
+            viewAngle-=viewAngleLimit;
     }
 }
 
@@ -69,7 +76,6 @@ void initReshape(int w, int h)
     glClearColor(0.0,0.0,0.0,1.0);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-WINDOW_WIDTH,WINDOW_WIDTH,-WINDOW_HEIGHT,WINDOW_HEIGHT,-20.0,20.0);
     if(showWelcomeScreen == 1)
     {
         if(w<=h)
@@ -128,6 +134,10 @@ void display()
             flipbook.addPage(PAGE_TYPE_DRAWING,square8);
             flipbook.addPage(PAGE_TYPE_TEXT,string);
             glColor3f(0,0,0);
+            if(startFlipping == 0){
+                glTranslatef(-80, -140, -100);
+                glRotatef(-90, 1, 0, 0);
+            }
             flipbook.renderBook();
             glPushMatrix();
                 glTranslatef(0,PAGE_HEIGHT+BOOK_BORDER_SIZE,0);
@@ -156,8 +166,11 @@ void mykeyboard(unsigned char key, GLint x,GLint y)
         pageId = ( pageId + 1 ) % 11;
     else if(key == 'p' || key == 'P')
         pageId = ( pageId - 1 ) % 11;
-    else if(key == 13)
+    else if(key == 13){
         showWelcomeScreen = 0;
+        startFlipping = 0;
+        pageAngle = 0;
+    }
     else if(key == 61)
         speed += 1;
     else if(key == 45)
@@ -187,6 +200,8 @@ void mymenu(int id)
         viewId=2;
     else if(id == 10)
         viewId=3;
+    else if(id == 11)
+        startFlipping=1;
     glutPostRedisplay();
 }
 int main(int argc, char **argv)
@@ -200,18 +215,24 @@ int main(int argc, char **argv)
     glutReshapeFunc(initReshape);
     glutDisplayFunc(display);
     wallTexture = loadTextures(wallImageFilename);
+    picTexture = loadTextures(picImageFilename);
     welcomeTexture = loadTextures(welcomeImageFilename);
+    tableTexture = loadTextures(tableImageFilename);
+    floorTexture = loadTextures(floorImageFilename);
+    pic2Texture = loadTextures(pic2ImageFilename);
+    wall2Texture = loadTextures(wall2ImageFilename);
     menuid=glutCreateMenu(mymenu);
     glutAddMenuEntry("Next Page",1);
     glutAddMenuEntry("Previous Page",2);
-    glutAddMenuEntry("Flip1",3);
-    glutAddMenuEntry("Flip2",4);
-    glutAddMenuEntry("Flip3",5);
-    glutAddMenuEntry("Flip4",6);
-    glutAddMenuEntry("View1",7);
-    glutAddMenuEntry("View2",8);
-    glutAddMenuEntry("View3",9);
-    glutAddMenuEntry("View4",10);
+    glutAddMenuEntry("Book Flip",3);
+    glutAddMenuEntry("Writing Pad Flip",4);
+    glutAddMenuEntry("Notebook Flip",5);
+    glutAddMenuEntry("Special Flip",6);
+    glutAddMenuEntry("Normal View",7);
+    glutAddMenuEntry("Top View",8);
+    glutAddMenuEntry("Bottom View",9);
+    glutAddMenuEntry("Horizontal 360 View",10);
+    glutAddMenuEntry("Start Flipping",11);
     //Specifies a symbolic value representing a shading technique. Accepted values are GL_FLAT and GL_SMOOTH.
     glShadeModel(GL_SMOOTH);
     glEnable(GL_DEPTH_TEST);
