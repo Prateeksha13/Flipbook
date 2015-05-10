@@ -15,9 +15,10 @@ GLuint loadTextures(char* filename)
                 );
 
     if (texture == 0){
-        cout<<"Texture Load Error: " + string(filename) +" File is Probably Missing\n";
+        cout<<"Texture Load Error: " + string(filename) +" File is Probably Missing or Load Error\n";
         exit(-1);
     }
+    cout<<endl<<filename<<" -> Loaded Successfully";
     glEnable(GL_TEXTURE_2D);
     glBindTexture (GL_TEXTURE_2D, texture);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
