@@ -23,7 +23,7 @@ class Book{
         GLfloat width, height; /*!< Book width and height */
         GLint noOfPages, currentPageIndex, destinationPageIndex; /*!< Page Index */
         Page **pages; /*!< Array of Page Instances */
-        Book(GLfloat, GLfloat, GLfloat);
+        Book();
         void addPage(GLint, char[]);
         void addPage(GLint, void (*)(GLfloat, GLfloat, GLfloat, GLfloat, GLfloat));
         void renderPage();

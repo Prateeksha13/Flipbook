@@ -1,14 +1,14 @@
 #include "./headers/Book.h"
 
 /*!
-    \fn Book::Book(GLfloat x, GLfloat y, GLfloat z)
-    \brief Constructor
+    \fn Book::Book()
+    \brief Constructor sets book position to 0,0,0
     Constructor which initialises all the required data members for the class
 */
-Book::Book(GLfloat x, GLfloat y, GLfloat z){
-    this->x = x;
-    this->y = y;
-    this->z = z;
+Book::Book(){
+    this->x = 0;
+    this->y = 0;
+    this->z = 0;
     this->width = BOOK_WIDTH;
     this->height = BOOK_HEIGHT;
     this->noOfPages = 0;
@@ -95,5 +95,6 @@ void Book::renderPage(){
 void Book::renderPage(GLint pageIndex){
     if(pageIndex<noOfPages){
         pages[pageIndex]->renderPage();
+        currentPageIndex = pageIndex;
     }
 }
