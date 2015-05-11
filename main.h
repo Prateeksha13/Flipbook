@@ -29,6 +29,8 @@ GLint pageId, flipId, viewId;
 GLfloat window_width, window_height;
 int showWelcomeScreen = 1;
 int startFlipping = 1;
+int pauseFlipping = 0;
+int noOfPages = 11;
 char wallImageFilename[]="../img/wall.bmp";
 char welcomeImageFilename[]="../img/welcome.jpg";
 char picImageFilename[]="../img/pic.bmp";

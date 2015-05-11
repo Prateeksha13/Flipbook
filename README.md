@@ -23,15 +23,15 @@
   * Soil Library required for image loading.
   * Doxygen for Documentation Generation
   * Generic Flipbook Class Created [ Library ]
-      - Book flipbook(x, y ,z); -> To create a Flipbook at specified position
-      - flipbook.addPage(PAGE_TYPE_TEXT, char* string)
+      - Book *flipbook = new flipbook(); -> To create a Flipbook at (0, 0, 0)
+      - flipbook->addPage(PAGE_TYPE_TEXT, char* string)
           + string -> text here is rendered onto the screen at that Page.
-      - flipbook.addPage(PAGE_TYPE_DRAWING, funct)
+      - flipbook->addPage(PAGE_TYPE_DRAWING, funct)
           + funct(xstart, ystart,z , xmax, ymax)
           + Specified function called, and what is drawn in this function is rendered onto the page.
-      - flipbook.renderBook() -> Render Flipbook at that position.
-      - flipbook.renderPage() -> Render last page added.
-      - flipbook.renderPage(x) -> render Page x on screen.
+      - flipbook->renderBook() -> Render Flipbook at that position.
+      - flipbook->renderPage() -> Render last page added.
+      - flipbook->renderPage(x) -> render Page x on screen.
 
 ## Execution :
 ```

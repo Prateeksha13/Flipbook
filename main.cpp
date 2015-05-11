@@ -12,9 +12,9 @@
     Sets the hex color received as argument.
 */
 void setHexColor(int color /*!< color received as Hexadecimal*/){
-    GLfloat b=(color%0xff)/255.0;
-    GLfloat g=((color>>8)%0xff)/255.0;
-    GLfloat r=((color>>16)%0xff)/255.0;
+    GLfloat b = (color%0xff)/255.0;
+    GLfloat g = ((color>>8)%0xff)/255.0;
+    GLfloat r = ((color>>16)%0xff)/255.0;
     glColor3f(r, g, b); /*!< Detailed description after the member */
 }
 
@@ -28,7 +28,7 @@ void setHexColor(int color /*!< color received as Hexadecimal*/){
 */
 void selectFlippingPageType(){
     if(flipId == 0){
-        pageFlipLimit=270;
+        pageFlipLimit = 270;
         glRotatef(pageAngle,0.0,-1.0,0.0); /*!< Book Flip type */
     }
     else if(flipId == 1){
@@ -40,7 +40,7 @@ void selectFlippingPageType(){
         glRotatef(pageAngle,-1.0,-0.0,0.0); /*!< Notepad Page Flip */
     }
     else if(flipId == 3){
-        pageFlipLimit=340;
+        pageFlipLimit = 340;
         glRotatef(pageAngle,-1.0,0.0,-1.0); /*!< Special Page Flip */
     }
 }
@@ -66,6 +66,16 @@ void selectViewingAngle(){
         gluLookAt(-500,0,3000,0,0,0,0,80,0); /*!< Horizontal View */
         glRotatef(viewAngle,0.0,-1.0,-1.0); /*!< 360 deg rotation */
     }
+    else if(viewId == 4){
+        viewAngleLimit = 720;
+        gluLookAt(0,-500,3000,0,0,0,0,80,0); /*!< Vertical View */
+        glRotatef(viewAngle,-1.0,0.0,0.0); /*!< 360 deg rotation */
+    }
+    else if(viewId == 5){
+        viewAngleLimit = 720;
+        gluLookAt(0,500,3000,0,0,0,0,80,0); /*!< Horizontal and Vertical View */
+        glRotatef(viewAngle,1.0,-1.0,1.0); /*!< 360 deg rotation */
+    }
 }
 
 /*!
@@ -76,20 +86,20 @@ void selectViewingAngle(){
     viewAngle -> for changing the viewing angle until viewAngleLimit
 */
 void flipPage(){
-    if(startFlipping == 1){
-        if(pageAngle<=pageFlipLimit){
+    if(startFlipping == 1 && pauseFlipping == 0){
+        if(pageAngle <= pageFlipLimit){
             pageAngle += speed; /*!< Increase pageAngle based on the chosen speed */
         }
         else{
-            pageAngle-=pageFlipLimit; /*!< Start from 0 after limit is crossed */
-            pageId = (pageId + 1)%11; /*!< Start from page 1 after n flips */
+            pageAngle -= pageFlipLimit; /*!< Start from 0 after limit is crossed */
+            pageId = (pageId + 1)%noOfPages; /*!< Start from page 1 after n flips */
         }
     }
-    if(viewId == 3){
-        if(viewAngle<=viewAngleLimit)
+    if(viewId >= 3){
+        if(viewAngle <= viewAngleLimit)
             viewAngle += speed; /*!< Increase viewAngle based on chosen speed */
         else
-            viewAngle-=viewAngleLimit; /*!< Start from 0 after limit is crossed */
+            viewAngle -= viewAngleLimit; /*!< Start from 0 after limit is crossed */
     }
 }
 
@@ -167,36 +177,36 @@ void display(){
         drawRoom();
         glPushMatrix();
             glTranslatef(-100,-100,0);
-            Book flipbook(0, 0, 0); /*!< Flipbook Creation */
+            Book *flipbook=new Book(); /*!< Flipbook Creation */
             glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient);
             glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse);
             glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular);
             glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess);
             /*!< Shading */
-            flipbook.addPage(PAGE_TYPE_DRAWING,square);   
-            flipbook.addPage(PAGE_TYPE_DRAWING,square1);
-            flipbook.addPage(PAGE_TYPE_DRAWING,square2);   
-            flipbook.addPage(PAGE_TYPE_DRAWING,square3);   
-            flipbook.addPage(PAGE_TYPE_DRAWING,square4);
-            flipbook.addPage(PAGE_TYPE_DRAWING,square5); 
-            flipbook.addPage(PAGE_TYPE_DRAWING,square6);
-            flipbook.addPage(PAGE_TYPE_DRAWING,square7);   
-            flipbook.addPage(PAGE_TYPE_DRAWING,square8);
-            flipbook.addPage(PAGE_TYPE_TEXT,string);
+            flipbook->addPage(PAGE_TYPE_DRAWING,square);   
+            flipbook->addPage(PAGE_TYPE_DRAWING,square1);
+            flipbook->addPage(PAGE_TYPE_DRAWING,square2);   
+            flipbook->addPage(PAGE_TYPE_DRAWING,square3);   
+            flipbook->addPage(PAGE_TYPE_DRAWING,square4);
+            flipbook->addPage(PAGE_TYPE_DRAWING,square5); 
+            flipbook->addPage(PAGE_TYPE_DRAWING,square6);
+            flipbook->addPage(PAGE_TYPE_DRAWING,square7);   
+            flipbook->addPage(PAGE_TYPE_DRAWING,square8);
+            flipbook->addPage(PAGE_TYPE_TEXT,string);
             glColor3f(0,0,0);
             if(startFlipping == 0){ /*!< Book laying down on the table */
-                glTranslatef(-80, -140, -100);
+                glTranslatef(-80, -140, -150);
                 glRotatef(-90, 1, 0, 0);
             }
-            flipbook.renderBook(); /*!< Render Flipbook */
+            flipbook->renderBook(); /*!< Render Flipbook */
             glPushMatrix();
                 glTranslatef(0,PAGE_HEIGHT+BOOK_BORDER_SIZE,0);
                 selectFlippingPageType(); /*!< Flip current Page */
                 glTranslatef(0,-PAGE_HEIGHT-BOOK_BORDER_SIZE,0);
-                flipbook.renderPage(pageId);
+                flipbook->renderPage(pageId);
                 glFlush();
             glPopMatrix();
-            flipbook.renderPage(pageId+1); /*!< Render next Page */
+            flipbook->renderPage(pageId+1); /*!< Render next Page */
             glColor3f(0,0,0);
             glFlush();
         glPopMatrix();
@@ -220,9 +230,9 @@ void display(){
 void mykeyboard(unsigned char key, GLint x,GLint y){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     if(key == 'n' || key == 'N')
-        pageId = ( pageId + 1 ) % 11; /*!< Goto next Page */
+        pageId = ( pageId + 1 ) % noOfPages; /*!< Goto next Page */
     else if(key == 'p' || key == 'P')
-        pageId = ( pageId - 1 ) % 11; /*!< Goto previous Page */
+        pageId = ( pageId - 1 ) % noOfPages; /*!< Goto previous Page */
     else if(key == 13){ /*!< Transition from welcome page to main page */
         showWelcomeScreen = 0;
         startFlipping = 0;
@@ -245,31 +255,91 @@ void mymenu(int id /*!< Menu id picked by the user */){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     switch(id){
         case 1:
-            pageId = ( pageId + 1 ) % 11;break; /*!< Goto next page */
+            pageId = ( pageId + 1 ) % noOfPages;break; /*!< Goto next page */
         case 2:
-            pageId = ( pageId + 1 ) % 11;break; /*!< Goto previous page */
+            pageId = ( pageId - 1 ) % noOfPages;break; /*!< Goto previous page */
         case 3:
-            flipId=0;break; /*!< Book Flip */
+            flipId = 0;break; /*!< Book Flip */
         case 4:
-            flipId=1;break; /*!< Writing Pad Flip */
+            flipId = 1;break; /*!< Writing Pad Flip */
         case 5:
-            flipId=2;break; /*!< Notepad Flip*/
+            flipId = 2;break; /*!< Notepad Flip*/
         case 6:
-            flipId=3;break; /*!< Special Page Flip */
+            flipId = 3;break; /*!< Special Page Flip */
         case 7:
-            viewId=0;break; /*!< Normal View */
+            viewId = 0;break; /*!< Normal View */
         case 8:
-            viewId=1;break; /*!< Top View */
+            viewId = 1;break; /*!< Top View */
         case 9:
-            viewId=2;break; /*!< Bottom View */
+            viewId = 2;break; /*!< Bottom View */
         case 10:
-            viewId=3;break; /*!< 360 deg Horizontal View */
-        case 11:
-            startFlipping=1;break; /*!< Flip the Book into view */
+            viewId = 3;break; /*!< 360 deg Horizontal View */
+        case 11:{
+            if(startFlipping == 0){ /*!< Flip the Book and start flipping Pages */
+                startFlipping = 1;
+                pauseFlipping = 0;
+            }
+            else /*!< Toggle Flipping */
+                pauseFlipping = !pauseFlipping;
+            break;
+        }
+        case 12:
+            speed += 1;break; /*!< Increase Speed */
+        case 13:
+            speed -= 1;break; /*!< Decrease Speed */
+        case 14:
+            viewId = 4;break; /*!< 360 deg Vertical View */
+        case 15:
+            viewId = 5;break; /*!< 360 deg Horizontal and Vertical View */
     }
     glutPostRedisplay();
 }
 
+/*!
+    \fn convertPicstoTextures()
+    \brief Load individual images as textures for texture mapping
+*/
+void convertPicstoTextures(){
+    wallTexture = loadTextures(wallImageFilename);
+    picTexture = loadTextures(picImageFilename);
+    welcomeTexture = loadTextures(welcomeImageFilename);
+    tableTexture = loadTextures(tableImageFilename);
+    floorTexture = loadTextures(floorImageFilename);
+    pic2Texture = loadTextures(pic2ImageFilename);
+    wall2Texture = loadTextures(wall2ImageFilename);
+}
+
+/*!
+    \fn addMenuInteraction()
+    \brief Create menu and add entries for mouse interaction
+*/
+void addMenuInteraction(){
+    int mainMenu, flipMenu, viewMenu;
+    /*!< Create sub menu for viewing variants */
+    viewMenu = glutCreateMenu(mymenu);
+    glutAddMenuEntry("Normal View", 7);
+    glutAddMenuEntry("Top View", 8);
+    glutAddMenuEntry("Bottom View", 9);
+    glutAddMenuEntry("Horizontal 360 View", 10);
+    glutAddMenuEntry("Vertical 360 View", 14);
+    glutAddMenuEntry("H/V 360 View", 15);
+    /*!< Create sub menu for flipping variants */
+    flipMenu = glutCreateMenu(mymenu);
+    glutAddMenuEntry("Book Flip", 3);
+    glutAddMenuEntry("Writing Pad Flip", 4);
+    glutAddMenuEntry("Notebook Flip", 5);
+    glutAddMenuEntry("Special Flip", 6);
+    /*!< Create menu and add entries for mouse interaction */
+    mainMenu=glutCreateMenu(mymenu);
+    glutAddMenuEntry("Toggle Flipping", noOfPages);
+    glutAddMenuEntry("Next Page", 1);
+    glutAddMenuEntry("Previous Page", 2);
+    glutAddSubMenu("View Types", viewMenu);
+    glutAddSubMenu("Flip Types", flipMenu);
+    glutAddMenuEntry("Speed Up", 12);
+    glutAddMenuEntry("Speed Down", 13);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
 /*!
     \fn main(int argc, char **argv)
     Loads individual pictures using libSoil as textures.
@@ -278,7 +348,6 @@ void mymenu(int id /*!< Menu id picked by the user */){
     Enable lighting and shading.
 */
 int main(int argc, char **argv){
-    int menuid;
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowPosition(50,50);
@@ -287,32 +356,14 @@ int main(int argc, char **argv){
     glutReshapeFunc(initReshape);
     glutDisplayFunc(display);
     /*! Load images into textures */
-    wallTexture = loadTextures(wallImageFilename);
-    picTexture = loadTextures(picImageFilename);
-    welcomeTexture = loadTextures(welcomeImageFilename);
-    tableTexture = loadTextures(tableImageFilename);
-    floorTexture = loadTextures(floorImageFilename);
-    pic2Texture = loadTextures(pic2ImageFilename);
-    wall2Texture = loadTextures(wall2ImageFilename);
+    convertPicstoTextures();
     /*!< Create menu and add entries for mouse interaction */
-    menuid=glutCreateMenu(mymenu);
-    glutAddMenuEntry("Next Page",1);
-    glutAddMenuEntry("Previous Page",2);
-    glutAddMenuEntry("Book Flip",3);
-    glutAddMenuEntry("Writing Pad Flip",4);
-    glutAddMenuEntry("Notebook Flip",5);
-    glutAddMenuEntry("Special Flip",6);
-    glutAddMenuEntry("Normal View",7);
-    glutAddMenuEntry("Top View",8);
-    glutAddMenuEntry("Bottom View",9);
-    glutAddMenuEntry("Horizontal 360 View",10);
-    glutAddMenuEntry("Start Flipping",11);
+    addMenuInteraction();
     /*!< Lighting, shading, keyboard, mouse, idle interactions enabled */
     glShadeModel(GL_SMOOTH);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_NORMALIZE);
     glEnable(GL_COLOR_MATERIAL);
-    glutAttachMenu(GLUT_RIGHT_BUTTON);
     glutKeyboardFunc(mykeyboard);
     glutIdleFunc(idleStateExecute);
     glEnable(GL_DEPTH_TEST);
