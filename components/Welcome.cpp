@@ -27,14 +27,46 @@ void renderText(char *string){
 */
 void showHeading(){
     char heading[] = "FlipBook";
+    GLfloat LIGHT_AMBIENT[]={0.5f,0.59f, 0.57f, 0.0f};
+    GLfloat LIGHT_DIFFUSE[]={0.73f,0.74f,0.76f,0.22f};
+    GLfloat LIGHT_POSITION[]={200.0f, 500.0f, 0.0f, 1.0f};
+    GLfloat mat_ambient[]={0.7f,0.7f,0.7f,1.0f};
+    GLfloat mat_diffuse[]={0.5f,0.5f,0.5f,1.0f};
+    GLfloat mat_specular[]={1.0f,1.0f,1.0f,1.0f};
+    GLfloat mat_shininess[]={50.0f};
+    /*!< Lighting and Shading */
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, LIGHT_AMBIENT);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, LIGHT_DIFFUSE);
+    GLfloat LIGHT_AMBIENT1[]={0.7f,0.7f, 0.27f, 0.0f};
+    GLfloat LIGHT_DIFFUSE1[]={0.33f,0.54f,0.86f,0.22f};
+    glEnable(GL_LIGHT1);
+    glLightfv(GL_LIGHT1, GL_AMBIENT, LIGHT_AMBIENT1);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, LIGHT_DIFFUSE1);
+    glLightfv(GL_LIGHT1, GL_POSITION, LIGHT_POSITION);
+    glLineWidth(2);
+    glColor3f(1,1,1);
     glPushMatrix();
         glLoadIdentity();
+        glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient);
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse);
+        glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular);
+        glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess);
         glTranslatef(-300,250,0);
         glScalef(1.5,1.5,10);
         glRotatef(pageAngle, 1 , 0 ,0);
+        glBegin(GL_LINES);
+            glVertex3f(-20,-15,0);
+            glVertex3f(510, -15, 0);
+        glEnd();
         renderText(heading);
         glFlush();
     glPopMatrix();
+    glDisable(GL_LIGHT0);
+    glDisable(GL_LIGHT1);
+    glDisable(GL_LIGHTING);
+    glLineWidth(1);
 }
 
 /*!
@@ -56,6 +88,8 @@ void showCredits(){
     glLightfv(GL_LIGHT0, GL_AMBIENT, LIGHT_AMBIENT);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, LIGHT_DIFFUSE);
     glLightfv(GL_LIGHT0, GL_POSITION, LIGHT_POSITION);
+    glLineWidth(2);
+    glColor3f(1,1,1);
     glPushMatrix();
         glLoadIdentity();
         glTranslatef(-150,-400,0);
@@ -72,6 +106,7 @@ void showCredits(){
     glPopMatrix();
     glDisable(GL_LIGHT0);
     glDisable(GL_LIGHTING);
+    glLineWidth(1);
 }
 
 /*!
@@ -81,6 +116,7 @@ void showCredits(){
 */
 void showFooter(){
     char message[]="Press Enter to Continue to the Flipbook";
+    glLineWidth(2.0);
     glPushMatrix();
         glLoadIdentity();
         glTranslatef(- 2 * WINDOW_WIDTH + pageAngle*4,-650,0);
@@ -88,6 +124,7 @@ void showFooter(){
         renderText(message);
         glFlush();
     glPopMatrix();
+    glLineWidth(1);
 }
 
 /*!
