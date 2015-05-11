@@ -186,6 +186,17 @@ void makeTable(){
         glTexCoord2f(1, 1); glVertex3f(300, -500, -310);
         glNormal3f(300, -500, -310);
     glEnd();
+    /*! Bottom view of the table */
+    glBegin(GL_QUADS);
+        glTexCoord2f(1, 0); glVertex3f(-300, -500, -500);
+        glNormal3f(-400, -280, -500);
+        glTexCoord2f(1, 1); glVertex3f(300, -500, -500);
+        glNormal3f(400, -280, -500);
+        glTexCoord2f(1, 0); glVertex3f(300, -500, -310);
+        glNormal3f(300, -500, -310);
+        glTexCoord2f(1, 1); glVertex3f(-300, -500, -310);
+        glNormal3f(-300, -500, -310);
+    glEnd();
     glDisable(GL_TEXTURE_2D);
 }
 
